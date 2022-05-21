@@ -14,6 +14,10 @@
 		2181AC4E2821858F005BA950 /* Phrase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2181AC4C2821858F005BA950 /* Phrase.xcdatamodeld */; };
 		2181AC5028218590005BA950 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2181AC4F28218590005BA950 /* Assets.xcassets */; };
 		2181AC5328218590005BA950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2181AC5128218590005BA950 /* LaunchScreen.storyboard */; };
+		21883A172838C4A800BA5B40 /* PharseItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21883A152838C4A800BA5B40 /* PharseItem+CoreDataClass.swift */; };
+		21883A182838C4A800BA5B40 /* PharseItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21883A162838C4A800BA5B40 /* PharseItem+CoreDataProperties.swift */; };
+		21A33EDF282E62680047E03C /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A33EDE282E62680047E03C /* SubTableViewCell.swift */; };
+		21B7B3042827BAB100FD352E /* secViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B7B3032827BAB100FD352E /* secViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,10 @@
 		2181AC4F28218590005BA950 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2181AC5228218590005BA950 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2181AC5428218590005BA950 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21883A152838C4A800BA5B40 /* PharseItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PharseItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		21883A162838C4A800BA5B40 /* PharseItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PharseItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		21A33EDE282E62680047E03C /* SubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
+		21B7B3032827BAB100FD352E /* secViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +66,12 @@
 		2181AC422821858E005BA950 /* Phrase */ = {
 			isa = PBXGroup;
 			children = (
+				21883A192838C4AC00BA5B40 /* PharseItem */,
 				2181AC432821858E005BA950 /* AppDelegate.swift */,
 				2181AC452821858F005BA950 /* SceneDelegate.swift */,
 				2181AC472821858F005BA950 /* ViewController.swift */,
+				21B7B3032827BAB100FD352E /* secViewController.swift */,
+				21A33EDE282E62680047E03C /* SubTableViewCell.swift */,
 				2181AC492821858F005BA950 /* Main.storyboard */,
 				2181AC4F28218590005BA950 /* Assets.xcassets */,
 				2181AC5128218590005BA950 /* LaunchScreen.storyboard */,
@@ -68,6 +79,15 @@
 				2181AC4C2821858F005BA950 /* Phrase.xcdatamodeld */,
 			);
 			path = Phrase;
+			sourceTree = "<group>";
+		};
+		21883A192838C4AC00BA5B40 /* PharseItem */ = {
+			isa = PBXGroup;
+			children = (
+				21883A152838C4A800BA5B40 /* PharseItem+CoreDataClass.swift */,
+				21883A162838C4A800BA5B40 /* PharseItem+CoreDataProperties.swift */,
+			);
+			path = PharseItem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,8 +163,12 @@
 			files = (
 				2181AC482821858F005BA950 /* ViewController.swift in Sources */,
 				2181AC442821858E005BA950 /* AppDelegate.swift in Sources */,
+				21A33EDF282E62680047E03C /* SubTableViewCell.swift in Sources */,
+				21883A182838C4A800BA5B40 /* PharseItem+CoreDataProperties.swift in Sources */,
 				2181AC4E2821858F005BA950 /* Phrase.xcdatamodeld in Sources */,
+				21B7B3042827BAB100FD352E /* secViewController.swift in Sources */,
 				2181AC462821858F005BA950 /* SceneDelegate.swift in Sources */,
+				21883A172838C4A800BA5B40 /* PharseItem+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
