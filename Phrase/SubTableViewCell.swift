@@ -16,9 +16,10 @@ class SubTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         customView.layer.cornerRadius = 15
-        customView.layer.backgroundColor = UIColor(named: "lightGray")?.cgColor
-        customView.layer.borderColor = UIColor(named: "LightGG")?.cgColor
+        customView.layer.backgroundColor = UIColor(named: "DGray")?.cgColor
+        customView.layer.borderColor = UIColor(named: "DborderGray")?.cgColor
         customView.layer.borderWidth = 3
+        // 客製化cell
         
     }
     

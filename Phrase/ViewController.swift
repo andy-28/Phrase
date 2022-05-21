@@ -10,11 +10,15 @@ import UIKit
 class ViewController: UIViewController{
    
     @IBOutlet weak var tableView: UITableView!
+    
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-    var list = [String]()
+    var list = [PharseItem]()
     var currentType = 0
     
-    
+    //MARK: - Button Style
+    // 客製化按鈕樣式
     private let floatingButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         let image = UIImage(systemName: "square.and.pencil",
@@ -47,18 +51,19 @@ class ViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         title = "瘋言瘋語"
-        view.backgroundColor = UIColor(named: "GGray")
-        
+        view.backgroundColor = UIColor(named: "DBgGray")
+
         configureNavbar()
-        
+        getAllItems()
+
         tableView.delegate = self
         tableView.dataSource = self
         tableView.dragDelegate = self
+        // 讓cell可以拖動
         tableView.dragInteractionEnabled = true
-        tableView.backgroundColor = UIColor(named: "GGray")
+        tableView.backgroundColor = UIColor(named: "DBgGray")
         
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(Tap), for: .touchUpInside)
@@ -75,7 +80,7 @@ class ViewController: UIViewController{
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: #selector(nextVC))
         
         
-        navigationController?.navigationBar.tintColor = UIColor(named: "C1")
+        navigationController?.navigationBar.tintColor = UIColor(named: "LabelC")
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,80 +92,105 @@ class ViewController: UIViewController{
     
     @objc func Tap() {
         
-        let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
-        alertController.addTextField { (textField : UITextField!) -> Void in
-            textField.placeholder = "Enter Second Name"
-        }
-        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
-            let firstTextField = alertController.textFields![0] as UITextField
-            
-            print("\(firstTextField.text!)")
-            
-            if firstTextField.text == "" {
-                let emptyAlert = UIAlertController(title: "No Content", message: "", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                emptyAlert.addAction(okAction)
-                
-                self.present(emptyAlert, animated: true, completion: nil)
+//        let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: UIAlertController.Style.alert)
+//        alertController.addTextField { (textField : UITextField!) -> Void in
+//            textField.placeholder = "Enter Second Name"
+//        }
+//        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+//            let firstTextField = alertController.textFields![0] as UITextField
+//
+//            print("\(firstTextField.text!)")
+//
+//            if firstTextField.text == "" {
+//                let emptyAlert = UIAlertController(title: "No Content", message: "", preferredStyle: UIAlertController.Style.alert)
+//                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                emptyAlert.addAction(okAction)
+//
+//                self.present(emptyAlert, animated: true, completion: nil)
+//            }
+//            else{
+//                self.list.append(firstTextField.text!)
+//                self.tableView.reloadData()
+//            }
+//
+//        })
+//
+//
+//        alertController.addAction(saveAction)
+//
+//        self.present(alertController, animated: true, completion: nil)
+        
+        // 利用alert的方式添加list所存儲的資料
+        let alert = UIAlertController(title: "New Item", message: "Enter new item", preferredStyle: .alert)
+        alert.addTextField(configurationHandler: nil)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            print("ca")
+        }))
+        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak self] _ in
+            guard let field = alert.textFields?.first, let text = field.text, !text.isEmpty else{
+                return
             }
-            else{
-                self.list.append(firstTextField.text!)
-                self.tableView.reloadData()
-            }
             
-        })
+            self?.createItem(name: text)
+            
+        }))
         
         
-        alertController.addAction(saveAction)
+        present(alert, animated: true)
         
-        self.present(alertController, animated: true, completion: nil)
         
     }
     
+    // 跳轉到別的VC
     @objc func nextVC() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "sec") as! secViewController
         vc.modalPresentationStyle = .pageSheet
         present(vc, animated: true)
     }
     
+    // 淺色模式
     func lightMode(){
         
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 32)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor(named: "DBgGray")]
 
-        navigationController?.navigationBar.tintColor = UIColor(named: "GGray")
+
+        navigationController?.navigationBar.tintColor = UIColor(named: "DBgGray")
+//        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.black]
+
         
         darkModeBtn.backgroundColor = UIColor(named: "lightP")
         let image = UIImage(systemName: "moon.fill",
                             withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .medium))
         darkModeBtn.setImage(image, for: .normal)
         darkModeBtn.tintColor = .white
-        view.backgroundColor = .white
-        tableView.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "LBgGray")
+        tableView.backgroundColor = UIColor(named: "LBgGray")
         
+
         tableView.reloadData()
     }
     
+    // 深色模式
     func darkMode(){
-        
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "C1")]
 
+        navigationController?.navigationBar.tintColor = UIColor(named: "LabelC")
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor(named: "LBgGray")]
         
-        navigationController?.navigationBar.tintColor = UIColor(named: "C1")
-        
+
         darkModeBtn.backgroundColor = UIColor(named: "lightY")
         let image = UIImage(systemName: "sun.max",
                             withConfiguration: UIImage.SymbolConfiguration(pointSize: 28, weight: .medium))
         darkModeBtn.setImage(image, for: .normal)
         darkModeBtn.tintColor = .black
-        view.backgroundColor = UIColor(named: "GGray")
+        view.backgroundColor = UIColor(named: "DBgGray")
+        tableView.backgroundColor = UIColor(named: "DBgGray")
         
-        
-        
-        tableView.backgroundColor = UIColor(named: "GGray")
         tableView.reloadData()
         
     }
     
+    // 判斷現在是哪個模式的func
     @objc func changeMode() {
         
         currentType += 1
@@ -181,6 +211,62 @@ class ViewController: UIViewController{
 
         }
     }
+    
+    // CoreData
+    
+    func getAllItems() {
+        
+        do {
+            list = try context.fetch(PharseItem.fetchRequest())
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        catch{
+            // error
+        }
+        
+    }
+    
+    func createItem(name: String) {
+        let newItem = PharseItem(context: context)
+        newItem.name = name
+        newItem.createAt = Date()
+        
+        do{
+            try context.save()
+            getAllItems()
+        }
+        catch{
+            
+        }
+    }
+    
+    func deleteItem(item: PharseItem) {
+        context.delete(item)
+        
+        do{
+            try context.save()
+            getAllItems()
+        }
+        catch{
+            
+        }
+    }
+    
+    func updateItem(item: PharseItem, newName: String) {
+        item.name = newName
+        
+        do{
+            try context.save()
+            getAllItems()
+        }
+        catch{
+            
+        }
+    }
+
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDragDelegate  {
@@ -194,8 +280,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let lists = list[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell", for: indexPath) as! SubTableViewCell
-        cell.textKK.text = list[indexPath.row]
+        cell.textKK.text = lists.name
         
         return cell
     }
@@ -224,6 +311,34 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UITableVie
             
             tableView.endUpdates()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let item = list[indexPath.row]
+        
+        let sheet = UIAlertController(title: "Edit", message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        sheet.addAction(UIAlertAction(title: "Edit", style: .default, handler: { _ in
+            let alert = UIAlertController(title: "Edit Item", message: "Edit your item", preferredStyle: .alert)
+            alert.addTextField(configurationHandler: nil)
+            alert.textFields?.first?.text = item.name
+            alert.addAction(UIAlertAction(title: "Save", style: .cancel, handler: { [weak self] _ in
+                guard let field = alert.textFields?.first, let newName = field.text, !newName.isEmpty else{
+                    return
+                }
+                
+                self?.updateItem(item: item, newName: newName)
+                
+            }))
+            
+            self.present(alert, animated: true)
+        }))
+        sheet.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            self?.deleteItem(item: item)
+        }))
+        
+        present(sheet, animated: true)
     }
     
     

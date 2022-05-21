@@ -40,7 +40,7 @@ class secViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! ViewController
-        vc.list.append(textView.text!)
+//        vc.list.append(textView.text!)
         vc.tableView?.reloadData()
         
     }
